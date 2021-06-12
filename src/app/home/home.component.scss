@@ -1,0 +1,38 @@
+.card-header {
+    background-color: orange;
+    color: white;
+}
+
+.card-footer {
+    background-color: orange;
+}
+
+.freeGame {
+    display: inline-block;
+    max-width: 15cm;
+    max-height: 15cm;
+    width: auto;
+    height: auto;
+}
+
+.thumbnail {
+    display: inline-block;
+    max-width:15cm;
+    max-height:15cm;
+    width: auto;
+    height: 8cm;
+}
+
+ngb-rating {
+    font-size: 30px;
+    color: rgb(255, 153, 0);
+    background: rgb(255, 255, 255);
+}
+
+.carousel-control-next{
+    max-height: 8cm;
+}
+
+.carousel-control-prev{
+    max-height: 8cm;
+}

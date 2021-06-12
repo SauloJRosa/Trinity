@@ -1,0 +1,103 @@
+<div class="main-content">
+
+  <div class="row justify-content-between">
+    <div class="mt-1 mb-1 col-5 fixed-header" id="top">
+      <div class="card text-center">
+        <img class="thumbnail" src="{{ jogo.thumbnail }}">
+          <div class="card-body">
+          <h5 class="card-title">{{ jogo.titulo }}</h5>
+          <ngb-rating [max]="5" [(rate)]="jogo.rating" [readonly]="true"></ngb-rating>
+          <p class="card-text">Rating: {{ jogo.rating }} </p>
+          <p class="card-text">platform: {{ jogo.plataforma }}</p>
+          <p class="card-text">{{ jogo.desconto }} OFF</p>
+          <p class="card-text">price: USD {{ jogo.precoFinal }}</p>
+            <div>
+              <a href="{{ jogo.url }}" class="btn btn-warning col-6">Go to Store</a>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="container col-7">
+  
+      <div [hidden]="submitted">
+        <form (ngSubmit)="enviarComentario()" #commentForm="ngForm">
+          <div class="card">
+            <div class="card-header novo-comentario">
+              <h3>Join the discussion! Give us your comment</h3>
+            </div>
+            <div class="card-body body-comentario">
+              <!--label>nota</!--label-->
+              <br>
+              <ngb-rating [max]="5" [(rate)]="model.nota" [readonly]="false"></ngb-rating>
+              <p>Rate: {{ model.nota }}</p>
+  
+              <div class="mb-3 form-group was-validated">
+                <label for="validationTextarea">Comment</label>
+                <textarea cols="50" rows="5" [(ngModel)]="model.comentario" name="Comentario" class="form-control" id="validationTextarea" placeholder="Insert your comment here." required></textarea>
+                <div class="invalid-feedback">
+                  Please insert your comment.
+                </div>
+              </div>
+  
+                <!--div class="form-group">
+                  <label for="Comentario">Comentario</label>
+                  <input type="text" class="form-control" id="Comentario"
+                        required
+                        [(ngModel)]="model.comentario" name="Comentario"
+                        #Comentario="ngModel">
+                  <div [hidden]="Comentario.valid || Comentario.pristine"
+                      class="alert alert-danger">
+                      Comentario is required
+                  </div>
+                </!--div-->
+  
+              <button type="submit" class="btn btn-warning" [disabled]="!commentForm.form.valid">Submit</button>
+              
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <div class="row justify-content-center">
+      <h1>Comments</h1>
+    </div>
+
+    <div class="row container" *ngIf="comentarios$ | async as content; else loading">
+      <div class="col-4" *ngFor="let comentario of data | paginate: { id: 'listing_pagination',
+      itemsPerPage: 9,
+      currentPage: page }">
+
+        <div class="card border-dark mb-3" style="box-shadow: 12px 9px 4px 0 rgb(0 0 0 / 14%);">
+          <div class="card-header">
+            Author: {{ comentario.autor }}
+            <br>
+            Date: {{ comentario.dataCriacao }}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Rating: <ngb-rating [max]="5" [(rate)]="comentario.nota" [readonly]="true"></ngb-rating> </h5>
+            <p class="card-text">{{ comentario.comentario }}</p>
+            <button type="submit" class="btn btn-warning" *ngIf="comentario.permission" (click)="deletarComentario(comentario.id)">Delete Comment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <pagination-controls class="my-pagination" id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event"></pagination-controls>
+    </div>
+
+    <ng-template #loading>
+      <br><br>
+      <div class="text-center">
+        <div class="spinner-border text-warning" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <br><br>
+    </ng-template>
+
+      
+</div>

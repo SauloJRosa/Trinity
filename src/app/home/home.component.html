@@ -1,0 +1,158 @@
+<div class="main-content">
+
+  <div class="row justify-content-around" *ngIf="jogosFreeEpic$ | async as content; else loading">
+
+    <div class="card text-center mr-3 ml-1">
+      <div class="card-header">
+        <h2>Free Game Of The Week On Epic Games</h2>
+      </div>
+
+      <div class="card-body" style="background-color: #eeeeee;">
+        <div *ngFor="let jogo of data | paginate: { id: 'listing_pagination',
+          itemsPerPage: 1,
+          currentPage: page }">
+
+          <div class="card" style="box-shadow: 12px 9px 4px 0 rgb(0 0 0 / 14%);">
+            <div class="row justify-content-md-center">
+
+              <div class="col-7">
+                <img class="freeGame" src="{{ jogo.thumbnail }}">
+              </div>
+              <div class="col-5">
+                <h5 class="card-title">
+                  <h2>{{ jogo.titulo }}</h2>
+                </h5>
+                <ngb-rating [max]="5" [(rate)]="jogo.rating" [readonly]="true"></ngb-rating>
+                <p class="card-text">Rating: {{ jogo.rating }} </p>
+                <p class="card-text">price: USD {{ jogo.precoFinal }}</p>
+                <div class="row justify-content-around">
+                  <a href="{{ jogo.url }}" class="btn btn-warning col-6">Go to Store</a>
+                </div>
+                <button class="btn btn-warning col-5" (click)="goToCommentary(jogo)">Ratings</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer text-muted">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="row justify-content-around">
+    <div class="col-6">
+
+
+      <div class="row justify-content-around">
+        <div class="card mr-4 ml-3">
+          <div class="card-header">
+            <h2>Epic Games Sales</h2>
+          </div>
+
+          <div class="row justify-content-around" *ngIf="jogosEpicPromo$ | async as content; else loading">
+            <div id="carouselExampleControls" class="carousel slide col-12" data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item" *ngFor="let jogo of dataEpicPromo | paginate: { id: 'listing_pagination',
+              itemsPerPage: 12,
+              currentPage: page }; let i = index;" [ngClass]="{'active': i == 0}">
+
+                  <img class="thumbnail" src="{{ jogo.thumbnail }}">
+                  <div class="card text-center">
+
+                    <div class="card-body">
+
+                      <h5 class="card-title">{{ jogo.titulo }}</h5>
+                      <ngb-rating [max]="5" [(rate)]="jogo.rating" [readonly]="true"></ngb-rating>
+                      <p class="card-text">Rating: {{ jogo.rating }} </p>
+                      <p class="card-text">{{ jogo.desconto }} OFF</p>
+                      <p class="card-text">price: USD {{ jogo.precoFinal }}</p>
+
+                      <div class="row justify-content-around">
+                        <a href="{{ jogo.url }}" target="" class="btn btn-warning col-6">Go to Store</a>
+                        <button class="btn btn-warning col-5" (click)="goToCommentary(jogo)">Ratings</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+
+      <div class="row justify-content-around">
+        <div class="card mr-4 ml-1">
+          <div class="card-header">
+            <h2>Gog Sales</h2>
+          </div>
+
+          <div class="row justify-content-around" *ngIf="jogosGogPromo$ | async as content; else loading">
+            <div id="carouselExampleControlsGog" class="carousel slide col-12" data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item" *ngFor="let jogo of dataGogPromo | paginate: { id: 'listing_pagination',
+              itemsPerPage: 12,
+              currentPage: page }; let i = index;" [ngClass]="{'active': i == 0}">
+
+                  <img class="thumbnail" src="{{ jogo.thumbnail }}">
+                  <div class="card text-center">
+
+                    <div class="card-body">
+
+                      <h5 class="card-title">{{ jogo.titulo }}</h5>
+                      <ngb-rating [max]="5" [(rate)]="jogo.rating" [readonly]="true"></ngb-rating>
+                      <p class="card-text">Rating: {{ jogo.rating }} </p>
+                      <p class="card-text">{{ jogo.desconto }} OFF</p>
+                      <p class="card-text">price: USD {{ jogo.precoFinal }}</p>              
+
+                      <div class="row justify-content-around">
+                        <a href="{{ jogo.url }}" class="btn btn-warning col-6">Go to Store</a>
+                        <button class="btn btn-warning col-5" (click)="goToCommentary(jogo)">Ratings</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <a class="carousel-control-prev" href="#carouselExampleControlsGog" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControlsGog" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center">
+      <div class="spinner-border text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

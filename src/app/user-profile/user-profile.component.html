@@ -1,0 +1,229 @@
+<div class="main-content">
+  
+  <div class="row container" *ngIf="user$ | async as content; else loading">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header card-header-warning">
+            <h4 class="card-title">Edit Profile</h4>
+            <p class="card-category">Complete your profile</p>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #accountUpdateForm="ngForm">
+
+            <div class="form-group">
+              <label for="name">Email</label>
+              <input type="email" class="form-control" id="email"
+                    disabled
+                    required email
+                    [(ngModel)]="model.email" name="name"
+                    placeholder="{{ model.email }}"
+                    #email="ngModel">
+              <div [hidden]="email.valid || email.pristine"
+                  class="alert alert-danger">
+                Email is required
+              </div>
+            </div>
+    
+            <div class="form-group">
+              <label for="nickname">Nickname</label>
+              <input type="text" class="form-control" id="nickname"
+                    required
+                    [(ngModel)]="model.nickname" name="nickname"
+                    placeholder="{{ model.nickname }}"
+                    #nickname="ngModel">
+              <div [hidden]="nickname.valid || nickname.pristine"
+                  class="alert alert-danger">
+                  Nickname is required
+              </div>
+            </div>
+            
+            <br>
+            <button *ngIf="!changePassword" (click)="changePassword=true"> Change Password</button>
+            <br><br>
+
+            <div class="row" *ngIf="changePassword">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="newpass">New Password</label>
+                  <input type="password" class="form-control" id="newpass"
+                        required
+                        [(ngModel)]="model.novaSenha" name="newpass"
+                        #newpass="ngModel">
+                  <div [hidden]="newpass.valid || newpass.pristine"
+                      class="alert alert-danger">
+                      New Password is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="cnewpass">Confirm New Password</label>
+                  <input type="password" class="form-control" id="cnewpass"
+                        required
+                        [(ngModel)]="model.senha" name="cnewpass"
+                        #cnewpass="ngModel">
+                  <div [hidden]="cnewpass.valid || cnewpass.pristine"
+                      class="alert alert-danger">
+                      The password is not the same.
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <button type="submit" class="btn btn-warning" [disabled]="!accountUpdateForm.form.valid">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <h1>Your Comments</h1>
+  </div>
+
+  <div class="row container" *ngIf="comentarios$ | async as content; else loading">
+    <div class="col-4" *ngFor="let comentario of comentarios | paginate: { id: 'listing_pagination',
+    itemsPerPage: 9,
+    currentPage: page }">
+
+      <div class="card border-dark mb-3" style="box-shadow: 12px 9px 4px 0 rgb(0 0 0 / 14%);">
+        <div class="card-header">
+          <h3>{{ comentario.jogo }}</h3>
+          <br>
+          Platform: {{ comentario.plataforma }}
+          <br>
+          Author: {{ comentario.autor }}
+          <br>
+          Date: {{ comentario.dataCriacao }}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Rating: <ngb-rating [max]="5" [(rate)]="comentario.nota" [readonly]="true"></ngb-rating> </h5>
+          <p class="card-text">{{ comentario.comentario }}</p>
+          <button type="submit" class="btn btn-warning" *ngIf="comentario.permission" (click)="deletarComentario(comentario.id)">Delete Comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+      <pagination-controls class="my-pagination" id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event"></pagination-controls>
+  </div>
+
+  <ng-template #loading>
+    <br><br>
+    <div class="text-center">
+      <div class="spinner-border text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <br><br>
+  </ng-template>
+
+  
+</div>
+
+<!--div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-8">
+              <div class="card">
+                  <div class="card-header card-header-danger">
+                      <h4 class="card-title">Edit Profile</h4>
+                      <p class="card-category">Complete your profile</p>
+                  </div>
+                  <div class="card-body">
+                      <form>
+                          <div class="row">
+                              <div class="col-md-5">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Company (disabled)" disabled>
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Username">
+                                  </mat-form-field>
+                              </div>
+                              <div class="col-md-4">
+                                  <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Email address" type="email">
+                                  </mat-form-field>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Fist Name" type="text">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Last Name" type="text">
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Adress" type="text">
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="City" type="text">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-4">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Country" type="text">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-4">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Postal Code" type="text">
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                <label>About Me</label>
+                                <mat-form-field class="example-full-width">
+                                   <textarea matInput placeholder="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."></textarea>
+                                 </mat-form-field>
+                                   <div class="form-group">
+
+                                      <div class="form-group">
+                                          <label class="bmd-label-floating"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
+                                          <textarea class="form-control" rows="5"></textarea>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <button mat-raised-button type="submit" class="btn btn-danger pull-right">Update Profile</button>
+                          <div class="clearfix"></div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="card card-profile">
+                  <div class="card-avatar">
+                      <a href="javascript:void(0)">
+                          <img class="img" src="./assets/img/faces/marc.jpg" />
+                      </a>
+                  </div>
+                  <div class="card-body">
+                      <h6 class="card-category text-gray">CEO / Co-Founder</h6>
+                      <h4 class="card-title">Alec Thompson</h4>
+                      <p class="card-description">
+                          Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                      </p>
+                      <a href="javascript:void(0)" class="btn btn-danger btn-round">Follow</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</!--div-->

@@ -1,0 +1,59 @@
+<div class="main-content">
+
+  <div class="card mt-1">
+    <img src="https://cdn.shopify.com/s/files/1/0346/8063/5529/collections/JT_banner_dbz_1944x.jpg?v=1590095082" class="card-img-top" alt="...">
+    <div class="card-body">
+  
+      <div class="row justify-content-md-end">
+        <form class="form-inline my-2 my-lg-0 mr-3">
+          <input class="form-control mr-sm-2" type="text" placeholder="Insert game title" aria-label="Search" #campoInput>
+          <button class="btn btn-warning my-2 my-sm-0" type="submit" (click)="searchGame(campoInput.value)">Search</button>
+        </form>
+      </div>
+
+      <div *ngIf="jogos$ != null">
+        <div class="row" *ngIf="jogos$ | async as content; else loading">
+  
+          <div class="col-4 mt-2" *ngFor="let jogo of data | paginate: { id: 'listing_pagination',
+            itemsPerPage: 9,
+            currentPage: page }">
+            <div class="card" style="box-shadow: 12px 9px 4px 0 rgb(0 0 0 / 14%);">
+              <img class="thumbnail" src="{{ jogo.thumbnail }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ jogo.titulo }}</h5>
+                <ngb-rating [max]="5" [(rate)]="jogo.rating" [readonly]="true"></ngb-rating>
+                <p class="card-text">Rating: {{ jogo.rating }} </p>
+                <p class="card-text">platform: {{ jogo.plataforma }}</p>
+                <p class="card-text">{{ jogo.desconto }} OFF</p>
+                <p class="card-text">price: USD {{ jogo.precoFinal }}</p>
+                <div class="row justify-content-around">
+                  <a href="{{ jogo.url }}" class="btn btn-warning col-5">Go to Store</a>
+                  <button class="btn btn-warning col-5" (click)="goToCommentary(jogo)">Ratings</button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  
+  
+        <br>
+        <div class="row justify-content-center">
+          <pagination-controls class="my-pagination" id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+
+      <ng-template #loading>
+        <div class="text-center">
+          <div class="spinner-border text-warning" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ng-template>
+  
+      <br>
+      
+    </div>
+  </div>
+
+</div>
